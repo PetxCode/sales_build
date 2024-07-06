@@ -27,34 +27,34 @@ const page = async () => {
     const file = await image.arrayBuffer();
     const buffer = new Uint8Array(file);
 
-    const dataComp: any = await new Promise((reject, resolve) => {
+    const dataComp: any = await new Promise((resolve, reject) => {
       cloudinary.uploader
         .upload_stream({}, (err, res) => {
           if (err) {
             return reject(err);
           } else {
             const result = resolve(res);
-            console.log(result);
+
             return result;
           }
         })
         .end(buffer);
     });
 
-    console.log("sec URL: ", dataComp.secure_url);
+    // console.log("sec URL: ", dataComp);
 
-    await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "Application/json",
-      },
-      body: JSON.stringify({
-        name,
-        price: parseInt(price),
-        image: "secure_url",
-        imageID: "public_id",
-      }),
-    });
+    // await fetch(url, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "Application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     name,
+    //     price: parseInt(price),
+    //     image: "secure_url",
+    //     imageID: "public_id",
+    //   }),
+    // });
 
     revalidateTag("items");
   };
